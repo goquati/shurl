@@ -4,6 +4,7 @@ import io.github.goquati.shurl.UserData.Companion.USER_DATA_AGENT_MAX_LENGTH
 import io.github.goquati.shurl.UserData.Companion.USER_DATA_IP_MAX_LENGTH
 import io.r2dbc.pool.ConnectionPool
 import io.r2dbc.pool.ConnectionPoolConfiguration
+import io.r2dbc.postgresql.PostgresqlConnectionFactoryProvider
 import io.r2dbc.spi.ConnectionFactories
 import io.r2dbc.spi.ConnectionFactoryOptions
 import io.r2dbc.spi.Statement
@@ -88,6 +89,8 @@ fun createDbPool(): ConnectionPool {
         option(ConnectionFactoryOptions.DATABASE, Config.Db.database)
         option(ConnectionFactoryOptions.USER, Config.Db.user)
         option(ConnectionFactoryOptions.PASSWORD, Config.Db.password)
+        Config.Db.sslMode?.let { option(PostgresqlConnectionFactoryProvider.SSL_MODE, it) }
+
     }.build()
     val connectionFactory = ConnectionFactories.get(dbConfig)
     val dbPoolConfig = ConnectionPoolConfiguration.builder(connectionFactory)

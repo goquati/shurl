@@ -1,5 +1,7 @@
 package io.github.goquati.shurl
 
+import io.r2dbc.postgresql.client.SSLMode
+
 data object Config {
     val schema: String = System.getenv("SHURL_SCHEMA_NAME")?.validSqlName ?: "shurl"
     val tableUrls: String = System.getenv("SHURL_TABLE_NAME_URLS")?.validSqlName ?: "urls"
@@ -15,6 +17,7 @@ data object Config {
         val database = System.getenv("SHURL_DB_DATABASE") ?: "postgres"
         val user = System.getenv("SHURL_DB_USER") ?: "postgres"
         val password = System.getenv("SHURL_DB_PASSWORD") ?: "postgres"
+        val sslMode = System.getenv("SHURL_DB_SSL_MODE")?.let { SSLMode.fromValue(it) }
     }
 
     object DbPool {
